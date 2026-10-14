@@ -71,13 +71,17 @@ def reconstruct_mms_media(sms_xml_dir: str, output_media_dir: str, process_image
     start_time = time.time()
     orig_files_count = 0
     error_count = 0
-
-    contentMsg = (f"Processing messages ({', '.join([x for cond, x in [
-        (process_image, 'images'),
-        (process_video, 'videos'),
-        (process_audio, 'audio'),
-        (process_pdf, 'PDFs')
-    ] if cond])})...")
+    media_types = [
+        name
+        for cond, name in [
+            (process_image, 'images'),
+            (process_video, 'videos'),
+            (process_audio, 'audio'),
+            (process_pdf, 'PDFs'),
+        ]
+        if cond
+    ]
+    contentMsg = (f"Processing messages ({', '.join(media_types)})...")
 
     print(contentMsg, end="", flush=True)
     for filename in sorted(os.listdir(sms_xml_dir)):
